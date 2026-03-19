@@ -72,9 +72,9 @@ services:
    environment:
      DB_HOST: db
      DB_PORT: 3306
-     DB_DATABASE: mysql
+     DB_DATABASE: mydatabase
      DB_USERNAME: root
-     DB_PASSWORD: 123456
+     DB_PASSWORD: password
 
 
  db:
@@ -84,15 +84,39 @@ services:
    volumes:
      - ./db_data:/var/lib/mysql
    environment:
-     MYSQL_ROOT_PASSWORD: 123456
+     MYSQL_ROOT_PASSWORD: password
      MYSQL_DATABASE: mysql
    ports:
      - "3307:3306"
 
+```
 
+#
+## Config Composer
+
+### Config in docker file
+- Dockerfile add: `COPY --from=composer:latest /usr/bin/composer /usr/bin/composer`
+- Composer copy from image to our project when build image: `docker compose up -d --build`
+
+### Config in phpstorm
+- setting -> search: `composer`
+- composer -> `remote Interpreter` -> `add` -> `choose docker`. 
+
+- and then when successfully add composer, in project will have `composer.json` and `composer.lock` file.
+
+Dockerfile After add composer
+```Dockerfile
+FROM php:8.4-apache
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+
+#new here
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+COPY . /var/www/html/
 ```
 
 
-
+#
 ## Reference
-- https://www.youtube.com/playlist?list=PLCakfctNSHkGYdA82WDUKF3WGyONpGiEw
+- https://www.youtube.com/playlist?list=PLCakfctNSHkGYdA82WDUKF3WGyONpGiEw (php with docker)
+- https://www.youtube.com/watch?v=jPh2rzgRDtI  (docker compose)
