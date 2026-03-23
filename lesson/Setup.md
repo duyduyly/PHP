@@ -4,7 +4,7 @@
 
 ## Setup php with Docker
 - pull php image `docker pull php:8.4-apache`
-- `docker run -it --name php-env84-apache php:8.4-apache bin/bash`
+- `docker run -it --name php-env84-apache php:8.4-apache /bin/bash`
 
 
 ## Create first project:
